@@ -10,6 +10,7 @@ import com.github.theholywaffle.teamspeak3.TS3Config;
 import com.github.theholywaffle.teamspeak3.TS3Query;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
+import com.github.theholywaffle.teamspeak3.api.wrapper.VirtualServer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,10 +55,11 @@ public class TS3Server {
         query.exit();
     }
 
-    public void testCredentials() {
+    public boolean testCredentials() {
         boolean ok = true;
         try {
             this.connect();
+            api.getVirtualServers();
             this.exit();
         } catch (com.github.theholywaffle.teamspeak3.api.exception.TS3Exception ex) {
             ok = false;
@@ -71,8 +73,19 @@ public class TS3Server {
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
                     JOptionPane.INFORMATION_MESSAGE);
         }
+        return ok;
     }
 
+    public List<VirtualServer> getServerlist() {
+        if (query == null) {
+            this.connect();
+        } else if (!query.isConnected()) {
+            this.connect();
+        }
+        List<VirtualServer> servers = api.getVirtualServers();
+        this.exit();
+        return servers;
+    }
     /*// Get all channels and map their channel IDs to them
         List<Channel> channels = api.getChannels();
         Map<Integer, Channel> channelMap = new HashMap<>(channels.size());
