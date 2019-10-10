@@ -13,6 +13,8 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import works.notimes.teamspeakmanager.model.ServerAuthInfo;
 
 /**
@@ -24,32 +26,51 @@ public class TS3Server {
     private ServerAuthInfo serverconf;
     private TS3Config config;
     private TS3Query query;
+    private TS3Api api;
 
     public TS3Server(ServerAuthInfo serverconf) {
         this.serverconf = serverconf;
 
-        config = new TS3Config();
+    }
 
-        config.setHost(serverconf.getIP());
+    public void connect() throws com.github.theholywaffle.teamspeak3.api.exception.TS3Exception {
+        config = new TS3Config();
+        config.setHost(this.serverconf.getIP());
         config.setEnableCommunicationsLogging(true);
 
         query = new TS3Query(config);
         query.connect();
 
-        final TS3Api api = query.getApi();
-        api.login(serverconf.getName(), serverconf.getPW());
-        //System.out.println(api.getServerInfo());
+        api = query.getApi();
+        api.login(this.serverconf.getUser(), this.serverconf.getPW());
         api.selectVirtualServerById(1);
-        api.setNickname(serverconf.getName());
-        api.sendChannelMessage("Bot is online!");
+        api.setNickname(this.serverconf.getName());
 
-        System.out.println(query.isConnected());
+    }
 
-        // We're done, disconnect
+    public void exit() {
+        api.setNickname("BotCheck" + Math.random());
+        api.logout();
         query.exit();
-        
-        System.out.println(query.isConnected());
+    }
 
+    public void testCredentials() {
+        boolean ok = true;
+        try {
+            this.connect();
+            this.exit();
+        } catch (com.github.theholywaffle.teamspeak3.api.exception.TS3Exception ex) {
+            ok = false;
+            String message = "Fehler!\n" + ex.getMessage();
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        if (ok) {
+            String message = "Verbindung OK!";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     /*// Get all channels and map their channel IDs to them

@@ -191,11 +191,7 @@ public class MainConfigurator extends javax.swing.JFrame {
     private void CheckServerAuthInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckServerAuthInfoActionPerformed
         ServerAuthInfo conf = new ServerAuthInfo(IP.getText(), User.getText(), PWD.getText(), BotName.getText());
         TS3Server ts = new TS3Server(conf);
-        
-        
-        
-        
-        
+        ts.testCredentials();    
     }//GEN-LAST:event_CheckServerAuthInfoActionPerformed
 
     /**
