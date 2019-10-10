@@ -5,22 +5,37 @@
  */
 package works.notimes.teamspeakmanager.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author mu
  */
+@XmlRootElement
 public class ServerAuthInfo {
 
     private String IP;
     private String User;
     private String PW;
     private String name;
+    private int Server;
+
+    public ServerAuthInfo() {
+    }
 
     public ServerAuthInfo(String IP, String User, String PW, String name) {
         this.IP = IP;
         this.User = User;
         this.PW = PW;
         this.name = name;
+    }
+
+    public ServerAuthInfo(String IP, String User, String PW, String name, int Server) {
+        this.IP = IP;
+        this.User = User;
+        this.PW = PW;
+        this.name = name;
+        this.Server = Server;
     }
 
     public String getName() {
@@ -53,6 +68,14 @@ public class ServerAuthInfo {
 
     public void setPW(String PW) {
         this.PW = PW;
+    }
+
+    public int getServer() {
+        return Server;
+    }
+
+    public void setServer(int Server) {
+        this.Server = Server;
     }
 
 }

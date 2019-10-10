@@ -15,6 +15,7 @@ import java.awt.TextField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import works.notimes.teamspeakmanager.dao.StoreConfig;
 import works.notimes.teamspeakmanager.dao.TS3Server;
 import works.notimes.teamspeakmanager.model.ServerAuthInfo;
 
@@ -31,7 +32,32 @@ public class MainConfigurator extends javax.swing.JFrame {
      * Creates new form MainConfigurator
      */
     public MainConfigurator() {
+
         initComponents();
+
+        loadConf();
+    }
+
+    public void loadConf() {
+        if (StoreConfig.isServerAuthInfo()) {
+            conf = StoreConfig.readServerAuthInfo();
+
+            IP.setText(conf.getIP());
+            User.setText(conf.getUser());
+            PWD.setText(conf.getPW());
+            BotName.setText(conf.getName());
+
+            ts = new TS3Server(conf);
+
+            ServerDropdown.removeAllItems();
+            for (VirtualServer v : ts.getServerlist()) {
+                ServerDropdown.addItem(v.getName());
+            }
+            ServerDropdown.setSelectedIndex(conf.getServer());
+
+            updateServerData();
+        }
+
     }
 
     /**
@@ -273,6 +299,11 @@ public class MainConfigurator extends javax.swing.JFrame {
         });
 
         jToggleButton1.setText("Server");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -299,12 +330,14 @@ public class MainConfigurator extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        if (conf != null) {
+            StoreConfig.writeServerAuthInfo(conf);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void CheckServerAuthInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckServerAuthInfoActionPerformed
         ServerAuthInfo conf = new ServerAuthInfo(IP.getText(), User.getText(), PWD.getText(), BotName.getText());
-        TS3Server ts = new TS3Server(conf);
+        ts = new TS3Server(conf);
         if (ts.testCredentials()) {
             ServerDropdown.removeAllItems();
             for (VirtualServer v : ts.getServerlist()) {
@@ -328,11 +361,15 @@ public class MainConfigurator extends javax.swing.JFrame {
         this.updateServerData();
     }//GEN-LAST:event_updateActionPerformed
 
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
+
     private void updateServerData() {
         int id;
         id = ServerDropdown.getSelectedIndex();
         if (conf == null) {
-            conf = new ServerAuthInfo(IP.getText(), User.getText(), PWD.getText(), BotName.getText());
+            conf = new ServerAuthInfo(IP.getText(), User.getText(), PWD.getText(), BotName.getText(), id);
             ts = new TS3Server(conf);
         }
         ts.connect();
