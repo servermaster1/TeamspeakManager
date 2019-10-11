@@ -60,6 +60,13 @@ public class TS3Server {
         try {
             this.connect();
             api.getVirtualServers();
+            for (Channel ch : api.getChannels()) {
+                System.out.println("Name: " + ch.getName());
+                System.out.println("ID:   " + ch.getId());
+                System.out.println("Parent" + ch.getParentChannelId());
+                System.out.println("Order:" + ch.getOrder());
+                System.out.println("MAP:  " + ch.getMap().toString());
+            }
             this.exit();
         } catch (com.github.theholywaffle.teamspeak3.api.exception.TS3Exception ex) {
             ok = false;
@@ -72,6 +79,7 @@ public class TS3Server {
             String message = "Verbindung OK!";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
                     JOptionPane.INFORMATION_MESSAGE);
+
         }
         return ok;
     }
@@ -85,6 +93,7 @@ public class TS3Server {
         List<VirtualServer> servers = api.getVirtualServers();
         this.exit();
         return servers;
+
     }
     /*// Get all channels and map their channel IDs to them
         List<Channel> channels = api.getChannels();

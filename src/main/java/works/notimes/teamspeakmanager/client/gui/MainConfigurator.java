@@ -11,13 +11,19 @@ import com.github.theholywaffle.teamspeak3.TS3Query;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Channel;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import com.github.theholywaffle.teamspeak3.api.wrapper.VirtualServer;
+import java.awt.Component;
 import java.awt.TextField;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import works.notimes.teamspeakmanager.dao.StoreConfig;
 import works.notimes.teamspeakmanager.dao.TS3Server;
 import works.notimes.teamspeakmanager.model.ServerAuthInfo;
+import works.notimes.teamspeakmanager.model.TeamspeakChannel;
+import works.notimes.teamspeakmanager.model.TeamspeakChannelManager;
 
 /**
  *
@@ -27,6 +33,8 @@ public class MainConfigurator extends javax.swing.JFrame {
 
     private ServerAuthInfo conf;
     TS3Server ts;
+
+    TeamspeakChannelManager tsm;
 
     /**
      * Creates new form MainConfigurator
@@ -57,6 +65,10 @@ public class MainConfigurator extends javax.swing.JFrame {
 
             updateServerData();
         }
+
+        tsm = new TeamspeakChannelManager();
+        tsm.addChannel(new TeamspeakChannel("Server", 0, 0, 0));
+        UpdateJTree();
 
     }
 
@@ -100,6 +112,20 @@ public class MainConfigurator extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         BotName = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        jLabel20 = new javax.swing.JLabel();
+        DeleteChannel = new javax.swing.JButton();
+        NewChannel = new javax.swing.JButton();
+        ChannelName = new javax.swing.JTextField();
+        SaveChannel = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
+        ParentDropdown = new javax.swing.JComboBox<>();
+        jLabel22 = new javax.swing.JLabel();
+        AfterDropDown = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        jComboBox3 = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
 
@@ -154,7 +180,7 @@ public class MainConfigurator extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ServerDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -209,7 +235,7 @@ public class MainConfigurator extends javax.swing.JFrame {
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(update)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 23, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel5);
@@ -236,7 +262,7 @@ public class MainConfigurator extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(IP)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -271,25 +297,111 @@ public class MainConfigurator extends javax.swing.JFrame {
                 .addComponent(BotName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CheckServerAuthInfo)
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(147, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel4);
 
         jTabbedPane2.addTab("Server", jPanel1);
 
+        jScrollPane1.setViewportView(jTree1);
+
+        jLabel20.setText("Name:");
+
+        DeleteChannel.setText("Delete");
+
+        NewChannel.setText("New");
+        NewChannel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewChannelActionPerformed(evt);
+            }
+        });
+
+        ChannelName.setText("jTextField1");
+
+        SaveChannel.setText("Save");
+
+        jLabel21.setText("Parent:");
+
+        jLabel22.setText("After:");
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Channel Settings"));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jLabel23.setText("Typ:");
+
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel20)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ChannelName, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SaveChannel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(NewChannel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(DeleteChannel))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel23)
+                                .addGap(22, 22, 22))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel21)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(ParentDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox3, 0, 152, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(AfterDropDown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 244, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(DeleteChannel)
+                    .addComponent(NewChannel)
+                    .addComponent(jLabel20)
+                    .addComponent(ChannelName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(SaveChannel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel21)
+                    .addComponent(ParentDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel22)
+                    .addComponent(AfterDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("tab2", jPanel2);
+        jTabbedPane2.addTab("Chanel", jPanel2);
 
         jButton1.setText("Speichern");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -365,6 +477,52 @@ public class MainConfigurator extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
+    private void NewChannelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewChannelActionPerformed
+        int aterindex = AfterDropDown.getSelectedIndex();
+        int parentindex = ParentDropdown.getSelectedIndex();
+        int afterid= tsm.getChannel(aterindex).getID();
+        int parentid = tsm.getChannel(parentindex).getID();
+       // System.out.println(aterindex + "|" + parentindex + "|" + afterid + "|" + parentid);
+        tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
+
+        tsm.increaseMaxid();
+        UpdateParentAfter();
+        UpdateJTree();
+    }//GEN-LAST:event_NewChannelActionPerformed
+    private void UpdateParentAfter() {
+        ParentDropdown.removeAllItems();
+        AfterDropDown.removeAllItems();
+        for(TeamspeakChannel ch : tsm.getChannels()){
+            ParentDropdown.addItem(ch.getName());
+            AfterDropDown.addItem(ch.getName());
+        }
+    }
+
+    private void UpdateJTree() {
+        System.out.println("Update");
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode();
+
+        for (TeamspeakChannel ts : tsm.getChannels()) {
+            if (ts.getParentChannelID() == 0) {
+                top.add(new DefaultMutableTreeNode(ts));
+            } else {
+                for (int i = 0; i < top.getChildCount(); i++) {
+                    DefaultMutableTreeNode child = (DefaultMutableTreeNode) top.getChildAt(i);
+                    TeamspeakChannel childc = (TeamspeakChannel) child.getUserObject();
+                    if (childc.getID() == ts.getParentChannelID()) {
+                        child.add(new DefaultMutableTreeNode(ts));
+                    }
+                }
+            }
+        }
+
+        // jTree1 = new JTree(top);
+        DefaultTreeModel model = new DefaultTreeModel(top);
+        jTree1.setModel(model);
+        jTree1.updateUI();
+        UpdateParentAfter();
+    }
+
     private void updateServerData() {
         int id;
         id = ServerDropdown.getSelectedIndex();
@@ -420,13 +578,20 @@ public class MainConfigurator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> AfterDropDown;
     private javax.swing.JTextField BotName;
+    private javax.swing.JTextField ChannelName;
     private javax.swing.JButton CheckServerAuthInfo;
+    private javax.swing.JButton DeleteChannel;
     private javax.swing.JTextField IP;
+    private javax.swing.JButton NewChannel;
     private javax.swing.JTextField PWD;
+    private javax.swing.JComboBox<String> ParentDropdown;
+    private javax.swing.JButton SaveChannel;
     private javax.swing.JComboBox<String> ServerDropdown;
     private javax.swing.JTextField User;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -439,6 +604,10 @@ public class MainConfigurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -448,10 +617,13 @@ public class MainConfigurator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTree jTree1;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 
