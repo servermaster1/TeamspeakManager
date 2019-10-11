@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class TeamspeakChannelManager {
 
-    private List<TeamspeakChannel> channels;
+    private LinkedList<TeamspeakChannel> channels;
     private int maxid;
 
     public TeamspeakChannelManager() {
@@ -29,7 +29,7 @@ public class TeamspeakChannelManager {
         return channels;
     }
 
-    public void setChannels(List<TeamspeakChannel> channels) {
+    public void setChannels(LinkedList<TeamspeakChannel> channels) {
         this.channels = channels;
     }
 
@@ -47,13 +47,13 @@ public class TeamspeakChannelManager {
 
     public void addChannel(TeamspeakChannel ch) {
         for (TeamspeakChannel cha : channels) {
-            //if (ch.getParentChannelID() != 0) {
-                if (cha.getOrder() == ch.getOrder()) {
-                    if (cha.getParentChannelID() == ch.getParentChannelID()) {
+            if (cha.getOrder() == ch.getOrder()) {
+                if (cha.getParentChannelID() == ch.getParentChannelID()) {
+                    if (!(cha.getID() == 0 && cha.getParentChannelID() == 0)) {
                         cha.setOrder(ch.getID());
                     }
                 }
-            //}
+            }
         }
         channels.add(ch);
         SortMyList();
@@ -63,14 +63,44 @@ public class TeamspeakChannelManager {
         return channels.get(id);
     }
 
-    public void SortMyList() {
-        Collections.sort(channels, new Comparator<TeamspeakChannel>() {
-            @Override
-            public int compare(TeamspeakChannel o1, TeamspeakChannel o2) {
-                return o1.getOrder() - o2.getOrder();
+    public int ChildCount(int id) {
+        int child = 0;
+        for (TeamspeakChannel ch : channels) {
+            if (ch.getParentChannelID() == id) {
+                child++;
             }
-        });
+        }
 
+        return child;
+    }
+
+    public LinkedList<TeamspeakChannel> getChildSortedList(int id) {
+        LinkedList<TeamspeakChannel> ret = new LinkedList<>();
+        int search = 0;
+        for (int i = 0; i < channels.size(); i++) {
+            TeamspeakChannel tt = channels.get(i);
+            if (tt.getParentChannelID() == id) {
+                if (tt.getOrder() == search) {
+                    ret.add(tt);
+                    channels.remove(i);
+                    if (!(tt.getID() == 0 && tt.getParentChannelID() == 0)) {
+                        if (this.ChildCount(tt.getID()) > 0) {
+                            LinkedList<TeamspeakChannel> temp = this.getChildSortedList(tt.getID());
+                            for (TeamspeakChannel gr : temp) {
+                                ret.add(gr);
+                            }
+                        }
+                    }
+                    search = tt.getID();
+                    i = -1;
+                }
+            }
+        }
+        return ret;
+    }
+
+    public void SortMyList() {
+        this.channels = this.getChildSortedList(0);
     }
 
 }

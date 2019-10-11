@@ -67,7 +67,8 @@ public class MainConfigurator extends javax.swing.JFrame {
         }
 
         tsm = new TeamspeakChannelManager();
-        tsm.addChannel(new TeamspeakChannel("Server", 0, -1, 0));
+//        tsm.addChannel(new TeamspeakChannel("Server", 0, -1, 0));
+        tsm.addChannel(new TeamspeakChannel("Server", 0, 0, 0));
         UpdateJTree();
 
     }
@@ -482,7 +483,7 @@ public class MainConfigurator extends javax.swing.JFrame {
         int parentindex = ParentDropdown.getSelectedIndex();
         int afterid= tsm.getChannel(aterindex).getID();
         int parentid = tsm.getChannel(parentindex).getID();
-        System.out.println(aterindex + "|" + parentindex + "|" + afterid + "|" + parentid);
+        //System.out.println(aterindex + "|" + parentindex + "|" + afterid + "|" + parentid);
         tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
 
         tsm.increaseMaxid();
@@ -521,6 +522,18 @@ public class MainConfigurator extends javax.swing.JFrame {
         jTree1.setModel(model);
         jTree1.updateUI();
         UpdateParentAfter();
+    }
+    
+    public DefaultMutableTreeNode getTree(){
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode();
+        
+        
+        
+        
+        
+        
+        return top;
+        
     }
 
     private void updateServerData() {
