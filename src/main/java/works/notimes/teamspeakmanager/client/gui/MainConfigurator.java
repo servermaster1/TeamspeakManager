@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import works.notimes.teamspeakmanager.dao.StoreConfig;
 import works.notimes.teamspeakmanager.dao.TS3Server;
 import works.notimes.teamspeakmanager.model.ServerAuthInfo;
@@ -481,7 +482,7 @@ public class MainConfigurator extends javax.swing.JFrame {
     private void NewChannelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewChannelActionPerformed
         int aterindex = AfterDropDown.getSelectedIndex();
         int parentindex = ParentDropdown.getSelectedIndex();
-        int afterid= tsm.getChannel(aterindex).getID();
+        int afterid = tsm.getChannel(aterindex).getID();
         int parentid = tsm.getChannel(parentindex).getID();
         //System.out.println(aterindex + "|" + parentindex + "|" + afterid + "|" + parentid);
         tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
@@ -493,14 +494,14 @@ public class MainConfigurator extends javax.swing.JFrame {
     private void UpdateParentAfter() {
         ParentDropdown.removeAllItems();
         AfterDropDown.removeAllItems();
-        for(TeamspeakChannel ch : tsm.getChannels()){
+        for (TeamspeakChannel ch : tsm.getChannels()) {
             ParentDropdown.addItem(ch.getName());
             AfterDropDown.addItem(ch.getName());
         }
     }
 
     private void UpdateJTree() {
-        System.out.println("Update");
+        /*
         DefaultMutableTreeNode top = new DefaultMutableTreeNode();
 
         for (TeamspeakChannel ts : tsm.getChannels()) {
@@ -516,24 +517,35 @@ public class MainConfigurator extends javax.swing.JFrame {
                 }
             }
         }
+         */
 
         // jTree1 = new JTree(top);
-        DefaultTreeModel model = new DefaultTreeModel(top);
+        DefaultTreeModel model = new DefaultTreeModel(getTree(0));
         jTree1.setModel(model);
         jTree1.updateUI();
         UpdateParentAfter();
     }
-    
-    public DefaultMutableTreeNode getTree(){
+
+    public DefaultMutableTreeNode getTree(int id) {
         DefaultMutableTreeNode top = new DefaultMutableTreeNode();
-        
-        
-        
-        
-        
-        
+
+        for (TeamspeakChannel ts : tsm.getChannels()) {
+            if (ts.getParentChannelID() == id) {
+                DefaultMutableTreeNode tmp = new DefaultMutableTreeNode(ts);
+                if (tsm.ChildCount(ts.getID()) > 0 && ts.getID() != 0) {
+                    DefaultMutableTreeNode ret = this.getTree(ts.getID());
+                    //tmp.add(ret);
+                    for(int i = 0; i < ret.getChildCount();i++){
+                        tmp.add((MutableTreeNode) ret.getChildAt(i));
+                        
+                    }
+                }
+                top.add(tmp);
+            }
+        }
+
         return top;
-        
+
     }
 
     private void updateServerData() {
@@ -572,13 +584,17 @@ public class MainConfigurator extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainConfigurator.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainConfigurator.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainConfigurator.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainConfigurator.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MainConfigurator.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
