@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -493,27 +495,38 @@ public class MainConfigurator extends javax.swing.JFrame {
         int parentindex = ParentDropdown.getSelectedIndex();
         int parentid = tsm.getChannel(parentindex).getID();
         int afterid;
-        if(tsm.getChannels().size()==0){
+        if (tsm.getChannels().size() == 0) {
             afterid = 0;
-            System.out.println("a");
-        }else if (parentid == 0) {
+        } else if (parentid == 0) {
             afterid = tsm.getChannel(aterindex).getID();
         } else {
             if (aterindex == 0) {
                 afterid = 0;
-                System.out.println("b");
             } else {
                 afterid = tsm.getChildList(parentid).get(aterindex - 1).getID();
                 //afterid = tsm.getChannel(aterindex - 1).getID();
             }
         }
         System.out.println("ID:" + tsm.getMaxid() + "After" + afterid);
-        tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
 
-        tsm.increaseMaxid();
-        UpdateParent();
-        UpdateAfter();
-        UpdateJTree();
+        boolean namedouble = false;
+        for (TeamspeakChannel tss : tsm.getChildList(parentid)) {
+            if (tss.getName().contentEquals(ChannelName.getText())) {
+                namedouble = true;
+            }
+        }
+        if (namedouble) {
+            String message = "Fehler!\n The Channel name alredy exists" ;
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                    JOptionPane.ERROR_MESSAGE);
+
+        } else {
+            tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
+            tsm.increaseMaxid();
+            UpdateParent();
+            UpdateAfter();
+            UpdateJTree();
+        }
     }//GEN-LAST:event_NewChannelActionPerformed
 
     private void ParentDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ParentDropdownActionPerformed
@@ -553,16 +566,16 @@ public class MainConfigurator extends javax.swing.JFrame {
         expandAllNodes(jTree1, 0, jTree1.getRowCount());
         UpdateParent();
     }
-    
-    private void expandAllNodes(JTree tree, int startingIndex, int rowCount){
-    for(int i=startingIndex;i<rowCount;++i){
-        tree.expandRow(i);
-    }
 
-    if(tree.getRowCount()!=rowCount){
-        expandAllNodes(tree, rowCount, tree.getRowCount());
+    private void expandAllNodes(JTree tree, int startingIndex, int rowCount) {
+        for (int i = startingIndex; i < rowCount; ++i) {
+            tree.expandRow(i);
+        }
+
+        if (tree.getRowCount() != rowCount) {
+            expandAllNodes(tree, rowCount, tree.getRowCount());
+        }
     }
-}
 
     public DefaultMutableTreeNode getTree(int id) {
         DefaultMutableTreeNode top = new DefaultMutableTreeNode();
@@ -577,7 +590,7 @@ public class MainConfigurator extends javax.swing.JFrame {
                         System.out.println("Child:" + ret.getChildCount());
                         tmp.add((MutableTreeNode) ret.getChildAt(i));
                     }*/
-                    while(ret.getChildCount()>0){
+                    while (ret.getChildCount() > 0) {
                         tmp.add((MutableTreeNode) ret.getChildAt(0));
                     }
                 }
