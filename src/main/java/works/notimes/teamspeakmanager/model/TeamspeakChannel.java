@@ -23,7 +23,7 @@ public class TeamspeakChannel {
         this.ID = ID;
         this.order = order;
         this.parentChannelID = parentChannelID;
-        System.out.println(name + "|" + ID + "|" + order + "|" + parentChannelID);
+       // System.out.println(name + "|" + ID + "|" + order + "|" + parentChannelID);
     }
 
     public String getName() {

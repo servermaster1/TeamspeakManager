@@ -5,6 +5,9 @@
  */
 package works.notimes.teamspeakmanager.model;
 
+import java.util.Collections;
+import static java.util.Collections.list;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +16,7 @@ import java.util.List;
  * @author mu
  */
 public class TeamspeakChannelManager {
+
     private List<TeamspeakChannel> channels;
     private int maxid;
 
@@ -36,19 +40,37 @@ public class TeamspeakChannelManager {
     public void setMaxid(int maxid) {
         this.maxid = maxid;
     }
-    
-    public void increaseMaxid(){
+
+    public void increaseMaxid() {
         maxid++;
     }
-    
-    public void addChannel(TeamspeakChannel ch){
+
+    public void addChannel(TeamspeakChannel ch) {
+        for (TeamspeakChannel cha : channels) {
+            //if (ch.getParentChannelID() != 0) {
+                if (cha.getOrder() == ch.getOrder()) {
+                    if (cha.getParentChannelID() == ch.getParentChannelID()) {
+                        cha.setOrder(ch.getID());
+                    }
+                }
+            //}
+        }
         channels.add(ch);
+        SortMyList();
     }
-    
-    public TeamspeakChannel getChannel(int id){
+
+    public TeamspeakChannel getChannel(int id) {
         return channels.get(id);
     }
-    
-    
-    
+
+    public void SortMyList() {
+        Collections.sort(channels, new Comparator<TeamspeakChannel>() {
+            @Override
+            public int compare(TeamspeakChannel o1, TeamspeakChannel o2) {
+                return o1.getOrder() - o2.getOrder();
+            }
+        });
+
+    }
+
 }
