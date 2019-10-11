@@ -14,6 +14,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.VirtualServer;
 import java.awt.Component;
 import java.awt.TextField;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JTree;
@@ -484,46 +485,43 @@ public class MainConfigurator extends javax.swing.JFrame {
         int parentindex = ParentDropdown.getSelectedIndex();
         int afterid = tsm.getChannel(aterindex).getID();
         int parentid = tsm.getChannel(parentindex).getID();
-        //System.out.println(aterindex + "|" + parentindex + "|" + afterid + "|" + parentid);
         tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
 
         tsm.increaseMaxid();
-        UpdateParentAfter();
+        UpdateParent();
         UpdateJTree();
     }//GEN-LAST:event_NewChannelActionPerformed
-    private void UpdateParentAfter() {
+    private void UpdateParent() {
         ParentDropdown.removeAllItems();
-        AfterDropDown.removeAllItems();
         for (TeamspeakChannel ch : tsm.getChannels()) {
             ParentDropdown.addItem(ch.getName());
-            AfterDropDown.addItem(ch.getName());
         }
     }
 
-    private void UpdateJTree() {
-        /*
-        DefaultMutableTreeNode top = new DefaultMutableTreeNode();
-
-        for (TeamspeakChannel ts : tsm.getChannels()) {
-            if (ts.getParentChannelID() == 0) {
-                top.add(new DefaultMutableTreeNode(ts));
-            } else {
-                for (int i = 0; i < top.getChildCount(); i++) {
-                    DefaultMutableTreeNode child = (DefaultMutableTreeNode) top.getChildAt(i);
-                    TeamspeakChannel childc = (TeamspeakChannel) child.getUserObject();
-                    if (childc.getID() == ts.getParentChannelID()) {
-                        child.add(new DefaultMutableTreeNode(ts));
-                    }
-                }
-            }
+    private void UpdateAfter() {
+        int afterindex = AfterDropDown.getSelectedIndex();
+        int afterid = tsm.getChannel(afterindex).getID();
+        LinkedList<TeamspeakChannel> mp = tsm.getChildSortedList(afterid);
+        
+        
+        
+        AfterDropDown.removeAllItems();
+        AfterDropDown.addItem(ts.getServerlist().get(0).getName());
+        for (TeamspeakChannel ch : mp) {
+            AfterDropDown.addItem(ch.getName());
         }
-         */
+        
+        
+        
+        
+        
+    }
 
-        // jTree1 = new JTree(top);
+    private void UpdateJTree() {
         DefaultTreeModel model = new DefaultTreeModel(getTree(0));
         jTree1.setModel(model);
         jTree1.updateUI();
-        UpdateParentAfter();
+        UpdateParent();
     }
 
     public DefaultMutableTreeNode getTree(int id) {
@@ -535,9 +533,9 @@ public class MainConfigurator extends javax.swing.JFrame {
                 if (tsm.ChildCount(ts.getID()) > 0 && ts.getID() != 0) {
                     DefaultMutableTreeNode ret = this.getTree(ts.getID());
                     //tmp.add(ret);
-                    for(int i = 0; i < ret.getChildCount();i++){
+                    for (int i = 0; i < ret.getChildCount(); i++) {
                         tmp.add((MutableTreeNode) ret.getChildAt(i));
-                        
+
                     }
                 }
                 top.add(tmp);
