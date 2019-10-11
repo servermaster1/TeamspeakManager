@@ -183,7 +183,7 @@ public class MainConfigurator extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ServerDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -238,7 +238,7 @@ public class MainConfigurator extends javax.swing.JFrame {
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(update)
-                .addGap(0, 23, Short.MAX_VALUE))
+                .addGap(0, 106, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel5);
@@ -265,7 +265,7 @@ public class MainConfigurator extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(IP)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -300,7 +300,7 @@ public class MainConfigurator extends javax.swing.JFrame {
                 .addComponent(BotName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CheckServerAuthInfo)
-                .addContainerGap(147, Short.MAX_VALUE))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
 
         jPanel1.add(jPanel4);
@@ -326,6 +326,12 @@ public class MainConfigurator extends javax.swing.JFrame {
 
         jLabel21.setText("Parent:");
 
+        ParentDropdown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ParentDropdownActionPerformed(evt);
+            }
+        });
+
         jLabel22.setText("After:");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Channel Settings"));
@@ -350,39 +356,40 @@ public class MainConfigurator extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ChannelName, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SaveChannel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(NewChannel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DeleteChannel))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addGap(22, 22, 22))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel23)
+                                    .addComponent(jLabel20))
+                                .addGap(10, 10, 10))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel21)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ParentDropdown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox3, 0, 152, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel22)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AfterDropDown, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(ParentDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel22)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(AfterDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(ChannelName)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(SaveChannel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(NewChannel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(DeleteChannel))))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 387, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 515, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DeleteChannel)
@@ -391,11 +398,12 @@ public class MainConfigurator extends javax.swing.JFrame {
                     .addComponent(ChannelName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(SaveChannel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel21)
-                    .addComponent(ParentDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel22)
-                    .addComponent(AfterDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(ParentDropdown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel22)
+                        .addComponent(AfterDropDown, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel21))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23)
@@ -483,14 +491,34 @@ public class MainConfigurator extends javax.swing.JFrame {
     private void NewChannelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewChannelActionPerformed
         int aterindex = AfterDropDown.getSelectedIndex();
         int parentindex = ParentDropdown.getSelectedIndex();
-        int afterid = tsm.getChannel(aterindex).getID();
         int parentid = tsm.getChannel(parentindex).getID();
+        int afterid;
+        if(tsm.getChannels().size()==0){
+            afterid = 0;
+            System.out.println("a");
+        }else if (parentid == 0) {
+            afterid = tsm.getChannel(aterindex).getID();
+        } else {
+            if (aterindex == 0) {
+                afterid = 0;
+                System.out.println("b");
+            } else {
+                afterid = tsm.getChildList(parentid).get(aterindex - 1).getID();
+                //afterid = tsm.getChannel(aterindex - 1).getID();
+            }
+        }
+        System.out.println("ID:" + tsm.getMaxid() + "After" + afterid);
         tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
 
         tsm.increaseMaxid();
         UpdateParent();
+        UpdateAfter();
         UpdateJTree();
     }//GEN-LAST:event_NewChannelActionPerformed
+
+    private void ParentDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ParentDropdownActionPerformed
+        UpdateAfter();
+    }//GEN-LAST:event_ParentDropdownActionPerformed
     private void UpdateParent() {
         ParentDropdown.removeAllItems();
         for (TeamspeakChannel ch : tsm.getChannels()) {
@@ -499,30 +527,42 @@ public class MainConfigurator extends javax.swing.JFrame {
     }
 
     private void UpdateAfter() {
-        int afterindex = AfterDropDown.getSelectedIndex();
-        int afterid = tsm.getChannel(afterindex).getID();
-        LinkedList<TeamspeakChannel> mp = tsm.getChildSortedList(afterid);
-        
-        
-        
-        AfterDropDown.removeAllItems();
-        AfterDropDown.addItem(ts.getServerlist().get(0).getName());
-        for (TeamspeakChannel ch : mp) {
-            AfterDropDown.addItem(ch.getName());
+        int parentindex = ParentDropdown.getSelectedIndex();
+        if (parentindex <= 0) {
+            parentindex = 0;
         }
-        
-        
-        
-        
-        
+        int afterid = tsm.getChannel(parentindex).getID();
+        LinkedList<TeamspeakChannel> mp = tsm.getChildList(afterid);
+
+        AfterDropDown.removeAllItems();
+
+        if (afterid != 0) {
+            AfterDropDown.addItem(tsm.getChannel(0).getName());
+        }
+        if (mp.size() > 0) {
+            for (TeamspeakChannel ch : mp) {
+                AfterDropDown.addItem(ch.getName());
+            }
+        }
     }
 
     private void UpdateJTree() {
         DefaultTreeModel model = new DefaultTreeModel(getTree(0));
         jTree1.setModel(model);
         jTree1.updateUI();
+        expandAllNodes(jTree1, 0, jTree1.getRowCount());
         UpdateParent();
     }
+    
+    private void expandAllNodes(JTree tree, int startingIndex, int rowCount){
+    for(int i=startingIndex;i<rowCount;++i){
+        tree.expandRow(i);
+    }
+
+    if(tree.getRowCount()!=rowCount){
+        expandAllNodes(tree, rowCount, tree.getRowCount());
+    }
+}
 
     public DefaultMutableTreeNode getTree(int id) {
         DefaultMutableTreeNode top = new DefaultMutableTreeNode();
@@ -533,9 +573,12 @@ public class MainConfigurator extends javax.swing.JFrame {
                 if (tsm.ChildCount(ts.getID()) > 0 && ts.getID() != 0) {
                     DefaultMutableTreeNode ret = this.getTree(ts.getID());
                     //tmp.add(ret);
-                    for (int i = 0; i < ret.getChildCount(); i++) {
+                    /*for (int i = 0; i <= ret.getChildCount(); i++) {
+                        System.out.println("Child:" + ret.getChildCount());
                         tmp.add((MutableTreeNode) ret.getChildAt(i));
-
+                    }*/
+                    while(ret.getChildCount()>0){
+                        tmp.add((MutableTreeNode) ret.getChildAt(0));
                     }
                 }
                 top.add(tmp);

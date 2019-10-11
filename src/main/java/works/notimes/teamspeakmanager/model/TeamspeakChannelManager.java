@@ -74,7 +74,7 @@ public class TeamspeakChannelManager {
         return child;
     }
 
-    public LinkedList<TeamspeakChannel> getChildSortedList(int id) {
+    private LinkedList<TeamspeakChannel> getChildSortedList(int id) {
         LinkedList<TeamspeakChannel> ret = new LinkedList<>();
         int search = 0;
         for (int i = 0; i < channels.size(); i++) {
@@ -96,6 +96,17 @@ public class TeamspeakChannelManager {
                 }
             }
         }
+        return ret;
+    }
+
+    public LinkedList<TeamspeakChannel> getChildList(int parent) {
+        LinkedList<TeamspeakChannel> ret = new LinkedList<>();
+        for (TeamspeakChannel tt : channels) {
+            if (tt.getParentChannelID() == parent) {
+                ret.add(tt);
+            }
+        }
+
         return ret;
     }
 
