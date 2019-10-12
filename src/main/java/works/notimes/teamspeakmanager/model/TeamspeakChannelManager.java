@@ -16,35 +16,35 @@ import java.util.List;
  * @author mu
  */
 public class TeamspeakChannelManager {
-
+    
     private LinkedList<TeamspeakChannel> channels;
     private int maxid;
-
+    
     public TeamspeakChannelManager() {
         channels = new LinkedList<>();
         maxid = 1;
     }
-
+    
     public List<TeamspeakChannel> getChannels() {
         return channels;
     }
-
+    
     public void setChannels(LinkedList<TeamspeakChannel> channels) {
         this.channels = channels;
     }
-
+    
     public int getMaxid() {
         return maxid;
     }
-
+    
     public void setMaxid(int maxid) {
         this.maxid = maxid;
     }
-
+    
     public void increaseMaxid() {
         maxid++;
     }
-
+    
     public void addChannel(TeamspeakChannel ch) {
         for (TeamspeakChannel cha : channels) {
             if (cha.getOrder() == ch.getOrder()) {
@@ -58,11 +58,26 @@ public class TeamspeakChannelManager {
         channels.add(ch);
         SortMyList();
     }
-
+    
+    public void deleteChannel(int ChannelID) {
+        TeamspeakChannel tmp = null;
+        
+        for (int i = 0; i < channels.size(); i++) {
+            if (channels.get(i).getID() == ChannelID) {
+                tmp = channels.remove(i);
+            }
+        }
+        for (int i = 0; i < channels.size(); i++) {
+            if (channels.get(i).getOrder() == tmp.getID()) {
+                channels.get(i).setOrder(tmp.getOrder());
+            }
+        }
+    }
+    
     public TeamspeakChannel getChannel(int id) {
         return channels.get(id);
     }
-
+    
     public int ChildCount(int id) {
         int child = 0;
         for (TeamspeakChannel ch : channels) {
@@ -70,10 +85,10 @@ public class TeamspeakChannelManager {
                 child++;
             }
         }
-
+        
         return child;
     }
-
+    
     private LinkedList<TeamspeakChannel> getChildSortedList(int id) {
         LinkedList<TeamspeakChannel> ret = new LinkedList<>();
         int search = 0;
@@ -98,7 +113,7 @@ public class TeamspeakChannelManager {
         }
         return ret;
     }
-
+    
     public LinkedList<TeamspeakChannel> getChildList(int parent) {
         LinkedList<TeamspeakChannel> ret = new LinkedList<>();
         for (TeamspeakChannel tt : channels) {
@@ -106,12 +121,12 @@ public class TeamspeakChannelManager {
                 ret.add(tt);
             }
         }
-
+        
         return ret;
     }
-
+    
     public void SortMyList() {
         this.channels = this.getChildSortedList(0);
     }
-
+    
 }

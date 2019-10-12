@@ -37,7 +37,7 @@ public class MainConfigurator extends javax.swing.JFrame {
 
     private ServerAuthInfo conf;
     TS3Server ts;
-
+    private TeamspeakChannel selectedChannel = null;
     TeamspeakChannelManager tsm;
 
     /**
@@ -309,11 +309,21 @@ public class MainConfigurator extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Server", jPanel1);
 
+        jTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jTree1ValueChanged(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTree1);
 
         jLabel20.setText("Name:");
 
         DeleteChannel.setText("Delete");
+        DeleteChannel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteChannelActionPerformed(evt);
+            }
+        });
 
         NewChannel.setText("New");
         NewChannel.addActionListener(new java.awt.event.ActionListener() {
@@ -325,6 +335,11 @@ public class MainConfigurator extends javax.swing.JFrame {
         ChannelName.setText("jTextField1");
 
         SaveChannel.setText("Save");
+        SaveChannel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SaveChannelActionPerformed(evt);
+            }
+        });
 
         jLabel21.setText("Parent:");
 
@@ -414,7 +429,7 @@ public class MainConfigurator extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Chanel", jPanel2);
+        jTabbedPane2.addTab("Channel", jPanel2);
 
         jButton1.setText("Speichern");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -516,7 +531,7 @@ public class MainConfigurator extends javax.swing.JFrame {
             }
         }
         if (namedouble) {
-            String message = "Fehler!\n The Channel name alredy exists" ;
+            String message = "Fehler!\n The Channel name alredy exists";
             JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
                     JOptionPane.ERROR_MESSAGE);
 
@@ -526,12 +541,128 @@ public class MainConfigurator extends javax.swing.JFrame {
             UpdateParent();
             UpdateAfter();
             UpdateJTree();
+            selectedChannel = null;
+            ChannelName.setText("");
         }
     }//GEN-LAST:event_NewChannelActionPerformed
 
     private void ParentDropdownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ParentDropdownActionPerformed
         UpdateAfter();
     }//GEN-LAST:event_ParentDropdownActionPerformed
+
+    private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) jTree1.getLastSelectedPathComponent();
+
+        if (node == null) {
+            return;
+        }
+        selectedChannel = (TeamspeakChannel) node.getUserObject();
+        UpdateSelectedChannel();
+    }//GEN-LAST:event_jTree1ValueChanged
+
+    private void DeleteChannelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteChannelActionPerformed
+        if (selectedChannel == null) {
+            String message = "Fehler!\n Please select a Channel first";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!(selectedChannel.getID() == 0 && selectedChannel != null)) {
+            tsm.deleteChannel(selectedChannel.getID());
+            ChannelName.setText("");
+            selectedChannel = null;
+            UpdateJTree();
+        }
+    }//GEN-LAST:event_DeleteChannelActionPerformed
+
+    private void SaveChannelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveChannelActionPerformed
+        if (selectedChannel == null) {
+            String message = "Fehler!\n Please select a Channel first";
+            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!(selectedChannel.getID() == 0 && selectedChannel != null)) {
+
+            int aterindex = AfterDropDown.getSelectedIndex();
+            int parentid = tsm.getChannel(ParentDropdown.getSelectedIndex()).getID();
+            int afterid;
+            if (tsm.getChannels().size() == 0) {
+                afterid = 0;
+            } else if (parentid == 0) {
+                afterid = tsm.getChannel(aterindex).getID();
+            } else {
+                if (aterindex == 0) {
+                    afterid = 0;
+                } else {
+                    afterid = tsm.getChildList(parentid).get(aterindex - 1).getID();
+                    //afterid = tsm.getChannel(aterindex - 1).getID();
+                }
+            }
+
+            boolean namedouble = false;
+            for (TeamspeakChannel tss : tsm.getChildList(parentid)) {
+                if (tss.getName().contentEquals(ChannelName.getText())) {
+                    if (!(tss.getID() == selectedChannel.getID())) {
+                        namedouble = true;
+                    }
+
+                }
+            }
+            if (namedouble) {
+                String message = "Fehler!\n The Channel name alredy exists";
+                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                        JOptionPane.ERROR_MESSAGE);
+
+            } else if (afterid == selectedChannel.getID()) {
+                String message = "Fehler!\n This Channel can not be after itself";
+                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                        JOptionPane.ERROR_MESSAGE);
+
+            } else if (parentid == selectedChannel.getID()) {
+                String message = "Fehler!\n This Channel can not be a child of itself";
+                JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+                        JOptionPane.ERROR_MESSAGE);
+
+            } else {
+                tsm.deleteChannel(selectedChannel.getID());
+                tsm.addChannel(new TeamspeakChannel(ChannelName.getText(), tsm.getMaxid(), afterid, parentid));
+                tsm.increaseMaxid();
+                selectedChannel = null;
+                ChannelName.setText("");
+                UpdateParent();
+                UpdateAfter();
+                UpdateJTree();
+            }
+        }
+    }//GEN-LAST:event_SaveChannelActionPerformed
+
+    private void UpdateSelectedChannel() {
+        ChannelName.setText(selectedChannel.getName());
+        UpdateParent();
+        for (int i = 0; i < tsm.getChannels().size(); i++) {
+            if (selectedChannel.getParentChannelID() == tsm.getChannels().get(i).getID()) {
+                ParentDropdown.setSelectedIndex(i);
+            }
+        }
+        UpdateAfter();
+        if (!(selectedChannel.getOrder() == 0)) {
+            for (int i = 0; i < tsm.getChildList(selectedChannel.getParentChannelID()).size(); i++) {
+                //for (TeamspeakChannel tmp : tsm.getChildList(selectedChannel.getParentChannelID())) {
+                if (selectedChannel.getOrder() == tsm.getChildList(selectedChannel.getParentChannelID()).get(i).getID()) {
+                    if (selectedChannel.getParentChannelID() == 0) {
+                        AfterDropDown.setSelectedIndex(i);
+                    } else {
+                        AfterDropDown.setSelectedIndex(i + 1);
+                    }
+                }
+//}
+
+            }
+        }
+
+    }
+
     private void UpdateParent() {
         ParentDropdown.removeAllItems();
         for (TeamspeakChannel ch : tsm.getChannels()) {
