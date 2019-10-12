@@ -10,13 +10,17 @@ import static java.util.Collections.list;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author mu
  */
+@XmlRootElement
 public class TeamspeakChannelManager {
     
+    @XmlElementWrapper
     private LinkedList<TeamspeakChannel> channels;
     private int maxid;
     

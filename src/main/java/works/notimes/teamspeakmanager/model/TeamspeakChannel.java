@@ -5,12 +5,13 @@
  */
 package works.notimes.teamspeakmanager.model;
 
-import java.util.LinkedList;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author mu
  */
+@XmlRootElement
 public class TeamspeakChannel {
 
     private String name;
@@ -24,6 +25,9 @@ public class TeamspeakChannel {
         this.order = order;
         this.parentChannelID = parentChannelID;
        // System.out.println(name + "|" + ID + "|" + order + "|" + parentChannelID);
+    }
+
+    public TeamspeakChannel() {
     }
 
     public String getName() {

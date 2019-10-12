@@ -69,11 +69,14 @@ public class MainConfigurator extends javax.swing.JFrame {
 
             updateServerData();
         }
-
-        tsm = new TeamspeakChannelManager();
-//        tsm.addChannel(new TeamspeakChannel("Server", 0, -1, 0));
-        tsm.addChannel(new TeamspeakChannel("Server", 0, 0, 0));
-        UpdateJTree();
+        if (StoreConfig.isTeamspeakChannelManager()) {
+            tsm = StoreConfig.readTeamspeakChannelManager();
+            UpdateJTree();
+        } else {
+            tsm = new TeamspeakChannelManager();
+            tsm.addChannel(new TeamspeakChannel("Server", 0, 0, 0));
+            UpdateJTree();
+        }
 
     }
 
@@ -472,6 +475,9 @@ public class MainConfigurator extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (conf != null) {
             StoreConfig.writeServerAuthInfo(conf);
+        }
+        if (tsm != null) {
+            StoreConfig.writeTeamspeakChannelManager(tsm);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
